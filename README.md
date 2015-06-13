@@ -11,6 +11,7 @@ Test MathJax
 Revised
 
 Test Viz
-[Vizualization](Viz/SimpleSD_v4.html)
+http://yourusername.github.io/projectname/
+[Vizualization](http://ParkeWilde.github.io/Regression-Analysis/Viz/SimpleSD_v4.html)
 
 Here is plain text.
