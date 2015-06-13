@@ -1,2 +1,3 @@
 # Regression Analysis for Pragmatic People
-* [Link to Chapter 1](Chapter-2.md)
+* [Chapter 1: Introduction](Chapter-1.md)
+* Chapter 2: Means
