@@ -10,4 +10,7 @@ Test MathJax
 
 Revised
 
+Test Viz
+[Vizualization](Viz/SimpleSD_v4.html)
+
 Here is plain text.
