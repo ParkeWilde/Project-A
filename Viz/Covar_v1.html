@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  <style type='text/css'>
+    .highlight {
+      font-weight: bold;
+      color: green;
+      background-color: orange;
+      text-align: right;
+    }
+
+    .headerRowStyle {
+      font-weight: bold;
+      color: black;
+      background-color: white;
+      text-align: center;
+    }
+
+    .bold-font {
+      font-weight: bold;
+    }
+
+  </style>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+    google.load("visualization", "1", {packages:["table", "controls", "corechart"]});
+    google.setOnLoadCallback(drawViz);
+
+    function drawViz() {
+      var query = new google.visualization.Query("https://docs.google.com/spreadsheets/d/1nOTJt9PDH-T08J_Z4pFW1DVvsNnJnak_91j0Lf6qzCw/edit?usp=sharing");
+        query.send(handleQueryResponse);
+    }
+
+      var dataRows=21;
+
+
+    function handleQueryResponse(response) {
+      var data = response.getDataTable();
+        
+      var yStep1 = document.getElementById("Step1").checked;
+      var yStep2 = document.getElementById("Step2").checked;
+      var yStep3 = document.getElementById("Step3").checked;
+      var yStep4 = document.getElementById("Step4").checked;
+
+      // Data Table //
+      var tableView = new google.visualization.DataView(data);
+        tableView.setColumns([2,3,4,5,7,8,9,11]);
+        tableView.setRows(0,dataRows-1);
+
+      var summaryView = new google.visualization.DataView(data);
+        summaryView.setColumns([0,1]);
+        summaryView.setRows([0,4,1,7]);
+
+      var tableOptions = {
+        allowHtml: true, showRowNumber: false, sort: 'disable', 'cssClassNames': cssClassNames
+      };
+     var summaryOptions = {
+        allowHtml: true, showRowNumber: false, sort: 'disable', 'cssClassNames': cssClassNames
+      };
+
+      // Scatter //
+      var scatterView = new google.visualization.DataView(data);
+        scatterView.setColumns([7,3]);
+        scatterView.setRows(0,dataRows-1);
+
+      var scatterOptions = {
+        title: 'Distribution of Income on Vertical Axis',
+        vAxis: {title: 'Food ($1000s)'},
+        hAxis: {title: 'Income ($1000s)'},
+        legend: 'none',
+        trendlines: { 0: {} },    // Draw a trendline for data series 0.
+        colors: ['blue', 'orange']
+      };
+
+      var cssClassNames = {
+        'headerRow': 'headerRowStyle'};
+
+      if (yStep1) {
+        scatterView.setColumns([7,3,4]);
+        for (i = 0; i < dataRows; i++) {
+        data.setCell(i,8, undefined, undefined, {'className': 'highlight'}); 
+        data.setCell(i,4, undefined, undefined, {'className': 'highlight'});
+        }
+        data.setCell(1,1, undefined, undefined, {'className': 'highlight'});
+        data.setCell(4,1, undefined, undefined, {'className': 'highlight'});
+      };
+      if (yStep2) {
+        for (i = 0; i < dataRows; i++) {
+        data.setCell(i,9, undefined, undefined, {'className': 'highlight'}); 
+        data.setCell(i,5, undefined, undefined, {'className': 'highlight'});
+        }
+      };
+      if (yStep3) {
+        for (i = 0; i < dataRows; i++) {
+        data.setCell(i,11, undefined, undefined, {'className': 'highlight'});
+        }
+      };
+      if (yStep4) {
+        data.setCell(7,1, undefined, undefined, {'className': 'highlight'});
+        };
+
+      var table = new google.visualization.Table(document.getElementById('table_div'));
+      table.draw(tableView, tableOptions);
+
+      var summary = new google.visualization.Table(document.getElementById('summary_div'));
+      summary.draw(summaryView, summaryOptions);
+
+      var scatter = new google.visualization.ScatterChart(document.getElementById('scatter_div'));
+      scatter.draw(scatterView, scatterOptions)
+        
+      }
+    </script>
+  </head>
+
+  <body>
+
+    <div id="outerDiv" style = "width: 560px;">
+    <div id="topDiv" style="width: 560px; overflow: hidden;">
+    <h1 align="center">Covariance</h1>
+      <p><strong>Memory Tool:</strong> "The <strong>covariance</strong> is an average of the product of the deviations-from-means."</p>
+
+      <div id="filter_div" style="float: left;">
+        <h2>Steps</h2>
+        <form>
+        <input type="radio" id="Step1" name="Step" value="1" onClick="drawViz()">Step 1: Mean of x and y.<br>
+        <input type="radio" id="Step2" name="Step" value="2" onClick="drawViz()">Step 2: Deviations-from-means.<br> 
+        <input type="radio" id="Step3" name="Step" value="3" onClick="drawViz()">Step 3: Product of deviations-from-means.<br> 
+        <input type="radio" id="Step4" name="Step" value="4" onClick="drawViz()">Step 4: Covariance (based on a sample).<br>   
+        </form>
+      </div>
+
+    </div>
+
+    <div id="middleDiv" style="width: 100%"> 
+      <h2>Data Table</h2>
+      <div id="table_div" style="height: 160px;"></div>
+      <div ><br><br></div>
+      <div id="summary_div" "></div>
+     </div> 
+
+    <div id="bottomDiv" style="width: 100%;">
+      <h2>Scatter Plot of Food Spending against Income</h2>
+      <div id="scatter_div" style="width: 100%;" ></div>
+    </div>
+  </div>
+
+  </body>
+</html>
